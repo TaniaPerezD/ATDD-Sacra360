@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- Ejecutar solo: mvn test -Dsuite=reportes -->
+<suite name="Sacra360 - Módulo Reportes" verbose="1">
+
+    <test name="Reportes">
+        <packages>
+            <package name="mx.sacra360.reportes"/>
+        </packages>
+    </test>
+
+</suite>
