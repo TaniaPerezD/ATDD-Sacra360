@@ -76,7 +76,7 @@ public class EditarUsuarioTest extends BaseTest {
 
         // PASO 6. Modificar la fecha de nacimiento
         ReportManager.info("PASO 6: Modificando la fecha de nacimiento por una fecha válida");
-        usuarioPage.editarFechaNacimiento("20-06-2006");
+        usuarioPage.editarFechaNacimiento("2006-06-20");
         Thread.sleep(800);
 
         // PASO 7. Seleccionar un rol diferente al actual
@@ -87,7 +87,7 @@ public class EditarUsuarioTest extends BaseTest {
         // PASO 8. Verificar que los cambios son correctos
         ReportManager.info("PASO 8: Verificando que los cambios se visualizan correctamente");
         Assert.assertFalse(
-            usuarioPage.editarFechaNacimiento("20-06-2006").isEmpty(),
+            usuarioPage.editarFechaNacimiento("2006-06-20").isEmpty(),
             "La fecha de nacimiento no se actualizó correctamente"
         );
         Thread.sleep(800);

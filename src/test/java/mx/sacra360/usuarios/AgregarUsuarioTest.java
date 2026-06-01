@@ -86,7 +86,7 @@ public class AgregarUsuarioTest extends BaseTest {
 
         // PASO 8. Seleccionar una fecha de nacimiento válida
         ReportManager.info("PASO 8: Seleccionando fecha de nacimiento válida");
-        usuarioPage.ingresarFechaNacimiento("07-04-2007");
+        usuarioPage.ingresarFechaNacimiento("2007-04-07");
         Thread.sleep(800);
 
         // PASO 9. Ingresar un correo electrónico válido y no registrado previamente

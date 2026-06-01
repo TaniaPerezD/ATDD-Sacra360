@@ -17,6 +17,7 @@
         <testng.version>7.10.2</testng.version>
         <webdrivermanager.version>5.9.2</webdrivermanager.version>
         <extentreports.version>5.1.2</extentreports.version>
+        <!-- Suite por defecto: se sobreescribe con -Dsuite=login -->
         <suite>all</suite>
     </properties>
 
@@ -54,7 +55,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng-suites/${suite}.xml</suiteXmlFile>
+                        <suiteXmlFile>testng-suites/all.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
