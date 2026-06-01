@@ -63,7 +63,7 @@ public class UsuarioPage extends BasePage {
 
     public void navegarAUsuarios() throws InterruptedException {
         driver.get("https://fronttaller0.vercel.app/usuarios");
-        Thread.sleep(2000);
+        waitForClickable(tabAgregarUsuario);
     }
 
     public void abrirTabAgregarUsuario() throws InterruptedException {

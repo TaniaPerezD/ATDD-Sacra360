@@ -56,9 +56,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- Por defecto corre la suite completa. Cambia con -Dsuite=login -->
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng-suites/${suite:-all}.xml</suiteXmlFile>
+                        <suiteXmlFile>testng-suites/all.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
