@@ -24,5 +24,10 @@
             <package name="mx.sacra360.usuarios"/>
         </packages>
     </test>
+    <test name="Auditoria Aplicacion">
+        <packages>
+            <package name="mx.sacra360.auditorias"/>
+        </packages>
+    </test>
 
 </suite>
