@@ -30,6 +30,12 @@ import org.testng.annotations.Test;
  * El sistema actualiza la información y muestra mensaje
  * "Usuario actualizado correctamente."
  ****************************************/
+
+// Comando para ejecutar esta prueba específica desde la terminal:
+// mvn clean compile test -Dtest=EditarUsuarioTest
+
+ // ===================================================================
+ 
 public class EditarUsuarioTest extends BaseTest {
 
     @Test(description = "S360-53: Editar Usuario con datos válidos")

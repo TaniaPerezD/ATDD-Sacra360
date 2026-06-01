@@ -30,6 +30,12 @@ import org.testng.annotations.Test;
  * Resultado Esperado:
  * Se muestra un mensaje indicando que el usuario fue registrado exitosamente
  ****************************************/
+
+// Comando para ejecutar esta prueba específica desde la terminal:
+// mvn clean compile test -Dtest=AgregarUsuarioTest
+
+ // ===================================================================
+
 public class AgregarUsuarioTest extends BaseTest {
 
     @Test(description = "S360-45: Agregar Usuario con datos válidos")

@@ -32,6 +32,12 @@ import org.testng.annotations.Test;
  * Se muestra un mensaje indicando que el correo electrónico ya existe
  * y que el usuario no pudo ser registrado
  ****************************************/
+
+// Comando para ejecutar esta prueba específica desde la terminal:
+// mvn clean compile test -Dtest=AgregarUsuarioEmailDuplicadoTest
+
+ // ===================================================================
+ 
 public class AgregarUsuarioEmailDuplicadoTest extends BaseTest {
 
     @Test(description = "S360-46: Agregar Usuario con correo electrónico ya registrado")
