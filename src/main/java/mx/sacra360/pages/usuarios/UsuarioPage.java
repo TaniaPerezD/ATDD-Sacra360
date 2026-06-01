@@ -14,7 +14,7 @@ public class UsuarioPage extends BasePage {
     private final By campoEmail         = By.id("email");
     private final By campoPassword      = By.id("password");
     private final By botonIniciarSesion = By.xpath("//*[@id='root']/div/div[1]/div/div[2]/button");
-    private final By botonConfirmarRegistro = By.xpath("//*[@id='root']/div/div/main/div/div[3]/div/div[2]/button[2]");
+    private final By botonConfirmarRegistro = By.xpath("/html/body/div[2]/div/div[3]/button[2]");
 
     // Localizadores FORMULARIO AGREGAR USUARIO 
     private final By tabAgregarUsuario  = By.xpath("//*[@id='root']/div/div/main/div/div[1]/button[1]");
@@ -37,7 +37,7 @@ public class UsuarioPage extends BasePage {
     private final By labelRol             = By.xpath("//label[contains(text(),'Rol')]");
     private final By labelEstado          = By.xpath("//label[contains(text(),'Estado')]");
     //private final By mensajeExito         = By.xpath("//*[contains(@class,'success') or contains(@class,'toast') or contains(text(),'exitosamente') or contains(text(),'registrado')]");
-    private final By mensajeExito = By.xpath("//*[contains(text(),'Usuario creado correctamente') or contains(text(),'Éxito') or contains(text(),'exitosamente')]");
+    private final By mensajeExito = By.xpath("//*[contains(text(),'Usuario creado correctamente') or contains(text(),'Usuario actualizado correctamente') or contains(text(),'Éxito') or contains(text(),'exitosamente') or contains(text(),'actualizado')]");
     private final By mensajeError = By.cssSelector(".text-rose-800");
 
     // Localizadores Buscar/Editar

@@ -9,6 +9,13 @@ import java.util.List;
 public class SacramentosPage extends BasePage {
 
     // -------------------------------------------------------------------------
+    // Login — mismos selectores que UsuarioPage (email / password / botón)
+    // -------------------------------------------------------------------------
+    private final By campoEmail          = By.id("email");
+    private final By campoPassword       = By.id("password");
+    private final By botonIniciarSesion  = By.xpath("//*[@id='root']/div/div[1]/div/div[2]/button");
+
+    // -------------------------------------------------------------------------
     // Selector de tipo de sacramento
     // El <input type="radio"> tiene className="hidden" — hay que hacer click
     // en el <label> padre que lo envuelve.
@@ -82,6 +89,24 @@ public class SacramentosPage extends BasePage {
     private final By primerFilaNombre = By.xpath("//table//tbody/tr[1]/td[1]");
 
     // =========================================================================
+    // Login y navegación — igual que UsuarioPage
+    // =========================================================================
+
+    public void iniciarSesion(String email, String password) throws InterruptedException {
+        Thread.sleep(1000);
+        type(campoEmail, email);
+        Thread.sleep(800);
+        type(campoPassword, password);
+        Thread.sleep(600);
+        click(botonIniciarSesion);
+    }
+
+    public void navegarASacramentos() throws InterruptedException {
+        driver.get("https://fronttaller0.vercel.app/sacramentos");
+        Thread.sleep(2000);
+    }
+
+    // =========================================================================
     // Métodos de interacción
     // =========================================================================
 
@@ -135,8 +160,8 @@ public class SacramentosPage extends BasePage {
         return this;
     }
 
-    public SacramentosPage ingresarFecha(String fecha) {
-        type(campoFecha, fecha);
+    public SacramentosPage ingresarFecha(String isoDate) {
+        setDateValue(campoFecha, isoDate);
         return this;
     }
 
@@ -150,7 +175,12 @@ public class SacramentosPage extends BasePage {
     // =========================================================================
 
     public boolean toastExitoVisible() {
-        return isDisplayed(toastExito);
+        try {
+            waitForVisible(toastExito);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String obtenerMensajeToast() {

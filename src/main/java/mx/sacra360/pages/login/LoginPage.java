@@ -6,10 +6,9 @@ import org.openqa.selenium.By;
 
 public class LoginPage extends BasePage {
 
-    // Localizadores — ajustar según el HTML real del sistema
-    private final By campoUsuario    = By.id("username");
+    private final By campoUsuario    = By.id("email");
     private final By campoPassword   = By.id("password");
-    private final By botonIngresar   = By.id("btn-login");
+    private final By botonIngresar   = By.xpath("//*[@id='root']/div/div[1]/div/div[2]/button");
     private final By mensajeError    = By.cssSelector(".alert-error");
 
     public LoginPage ingresarUsuario(String usuario) {
