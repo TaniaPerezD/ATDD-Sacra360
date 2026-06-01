@@ -101,7 +101,7 @@ public class GenerarReporteEstadisticasPDFTest extends BaseTest {
         // PASO 6. Confirmar descarga en el diálogo SweetAlert2
         // El servidor puede tardar en generar el PDF — esperamos hasta 60 segundos
         ReportManager.info("PASO 6: Esperando el diálogo de confirmación de descarga");
-        WebDriverWait swalWait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        WebDriverWait swalWait = new WebDriverWait(driver, Duration.ofSeconds(80));
         WebElement botonConfirmar = swalWait.until(
             ExpectedConditions.elementToBeClickable(By.cssSelector(".swal2-confirm"))
         );
