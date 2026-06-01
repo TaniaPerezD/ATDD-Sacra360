@@ -2,7 +2,6 @@ package mx.sacra360.sacramentos;
 
 import mx.sacra360.base.BaseTest;
 import mx.sacra360.config.ConfigManager;
-import mx.sacra360.pages.login.LoginPage;
 import mx.sacra360.pages.sacramentos.SacramentosPage;
 import mx.sacra360.utils.ReportManager;
 import org.testng.Assert;
@@ -26,12 +25,12 @@ public class SacramentosTest extends BaseTest {
     private SacramentosPage sacramentosPage;
 
     @BeforeMethod
-    public void iniciarSesionEIrASacramentos() {
-        sacramentosPage = new LoginPage()
-                .ingresarUsuario(ConfigManager.getTestUser())
-                .ingresarPassword(ConfigManager.getTestPassword())
-                .clickIngresar()
-                .irASacramentos();
+    public void iniciarSesionEIrASacramentos() throws InterruptedException {
+        sacramentosPage = new SacramentosPage();
+        Thread.sleep(2000);
+        sacramentosPage.iniciarSesion(ConfigManager.getSacramentosUser(), ConfigManager.getSacramentosPassword());
+        Thread.sleep(3000);
+        sacramentosPage.navegarASacramentos();
     }
 
     // =========================================================================
@@ -52,8 +51,8 @@ public class SacramentosTest extends BaseTest {
      *
      * Resultado Esperado: Toast verde con "Sacramento registrado correctamente"
      */
-    @Test(description = "TC: Registrar un nuevo bautizo correctamente")
-    public void registrarBautizoTest() {
+    @Test(priority = 2, description = "TC: Registrar un nuevo bautizo correctamente")
+    public void registrarBautizoTest() throws InterruptedException {
 
         /********** Preparación de la prueba **********/
 
@@ -72,7 +71,7 @@ public class SacramentosTest extends BaseTest {
                 .ingresarParroquia("Sagrado")
                 .ingresarFoja("B-15")
                 .ingresarNumero("42")
-                .ingresarFecha("2025-03-20")
+                .ingresarFecha("2025-03-17")
                 .clickRegistrar();
 
         /************ Verificación del resultado esperado — Assert ***************/
@@ -87,6 +86,8 @@ public class SacramentosTest extends BaseTest {
                 sacramentosPage.obtenerMensajeToast().contains("Sacramento registrado correctamente"),
                 "El mensaje del Toast no es el esperado. Se obtuvo: "
                         + sacramentosPage.obtenerMensajeToast());
+
+        Thread.sleep(2500);
     }
 
     // =========================================================================
@@ -130,7 +131,7 @@ public class SacramentosTest extends BaseTest {
 
         /************ Verificación del resultado esperado — Assert ***************/
 
-        ReportManager.info("Entonces la tabla debe mostrar al menos un resultado que contenga 'PEREZ'");
+        ReportManager.info("Entonces la tabla debe mostrar al menos un resultado que contenga 'Perez'");
 
         Assert.assertTrue(
                 sacramentosPage.cantidadResultados() >= 1,
@@ -138,7 +139,7 @@ public class SacramentosTest extends BaseTest {
 
         Assert.assertTrue(
                 sacramentosPage.obtenerNombrePrimerResultado().toUpperCase().contains("PEREZ"),
-                "El primer resultado no contiene 'PEREZ'. Se obtuvo: "
+                "El primer resultado no contiene 'Perez'. Se obtuvo: "
                         + sacramentosPage.obtenerNombrePrimerResultado());
     }
 
@@ -163,7 +164,7 @@ public class SacramentosTest extends BaseTest {
      * Resultado Esperado: Botón deshabilitado con campos vacíos;
      * se habilita solo cuando todos los campos están completos
      */
-    @Test(description = "TC-898: El botón Registrar permanece deshabilitado con campos vacíos")
+    @Test(priority = 1, description = "TC-898: El botón Registrar permanece deshabilitado con campos vacíos")
     public void validarCamposObligatoriosTest() {
 
         /********** Preparación de la prueba **********/
