@@ -36,4 +36,10 @@
         </packages>
     </test>
 
+    <test name="Personas">
+        <packages>
+            <package name="mx.sacra360.personas"/>
+        </packages>
+    </test>
+
 </suite>
