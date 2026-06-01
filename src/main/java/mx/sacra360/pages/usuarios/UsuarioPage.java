@@ -40,6 +40,14 @@ public class UsuarioPage extends BasePage {
     private final By mensajeExito = By.xpath("//*[contains(text(),'Usuario creado correctamente') or contains(text(),'Éxito') or contains(text(),'exitosamente')]");
     private final By mensajeError = By.cssSelector(".text-rose-800");
 
+    // Localizadores Buscar/Editar
+    private final By tabBuscarEditar     = By.xpath("//*[@id='root']/div/div/main/div/div[1]/button[2]");
+    private final By filaUsuario         = By.xpath("//*[@id='root']/div/div/main/div/div[3]/div[2]/div/div/table/tbody/tr[6]");
+    private final By campoFechaEdicion   = By.id("fecha_nacimiento");
+    private final By selectRolEdicion    = By.id("id_rol");
+    private final By botonGuardarCambios = By.xpath("/html/body/div[2]/div/div[3]/button[2]");
+    private final By campoNombreReadOnly = By.xpath("//*[@id='nombre' and @readonly]");
+
     // ══════════════════════════════════════════════════════════════════════
     // MÉTODOS DE LOGIN
     // ══════════════════════════════════════════════════════════════════════
@@ -149,5 +157,37 @@ public class UsuarioPage extends BasePage {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    //Para editar
+    public void abrirTabBuscarEditar() throws InterruptedException {
+        click(tabBuscarEditar);
+        Thread.sleep(1000);
+    }
+
+    public void seleccionarUsuarioDeLista() throws InterruptedException {
+        click(filaUsuario);
+        Thread.sleep(1000);
+    }
+
+    public boolean camposEstanBloqueados() {
+        return isDisplayed(By.id("nombre"));
+    }
+
+    public String editarFechaNacimiento(String fecha) throws InterruptedException {
+        type(campoFechaEdicion, fecha);
+        Thread.sleep(500);
+        return fecha;
+    }
+
+    public void seleccionarRolEdicion() throws InterruptedException {
+        WebElement el = waitForVisible(selectRolEdicion);
+        new Select(el).selectByIndex(6);
+        Thread.sleep(500);
+    }
+
+    public void clickGuardarCambios() throws InterruptedException {
+        click(botonGuardarCambios);
+        Thread.sleep(500);
     }
 }
