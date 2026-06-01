@@ -42,6 +42,9 @@ import org.testng.annotations.Test;
 
 public class ValidarCamposRequeridosAgregarPersonaTest extends BaseTest {
 
+
+    /********** Preparación de la Prueba **********/
+
     private PersonaPage personaPage;
 
     // CI único para esta prueba (no debe estar registrado)
@@ -63,8 +66,7 @@ public class ValidarCamposRequeridosAgregarPersonaTest extends BaseTest {
 
     @Test(description = "TC-40: Validación de campos requeridos en Agregar Persona")
     public void validarCamposRequeridosTest() throws InterruptedException {
-
-        /********** Preparación de la Prueba **********/
+      
 
         // PASO 2. Hacer clic en 'Personas' en el menú lateral
         ReportManager.info("PASO 2: Navegando al módulo Personas, pestaña Agregar Persona activa");
@@ -84,6 +86,9 @@ public class ValidarCamposRequeridosAgregarPersonaTest extends BaseTest {
 
         // PASO 4. Hacer clic en 'Agregar Persona' — el botón debe estar bloqueado
         ReportManager.info("PASO 4: Verificando que el botón 'Agregar Persona' está deshabilitado con campos incompletos");
+        
+        /********** Verificación - Parte 1 — Boton Inactivo **********/
+
         Assert.assertTrue(
             personaPage.botonAgregarEstaDeshabilitado(),
             "El botón 'Agregar Persona' debería estar deshabilitado cuando faltan campos obligatorios, " +
@@ -113,18 +118,24 @@ public class ValidarCamposRequeridosAgregarPersonaTest extends BaseTest {
         //         porque faltan fecha_nacimiento y estado (verificación)
         ReportManager.info("PASO 7: Verificando que el botón permanece deshabilitado " +
                            "cuando faltan fecha de nacimiento y estado de verificación");
+
+        /********** Verificación - Parte 2 — Boton Inactivo **********/
+
         Assert.assertTrue(
             personaPage.botonAgregarEstaDeshabilitado(),
             "El botón 'Agregar Persona' debería seguir deshabilitado cuando faltan " +
             "'fecha de nacimiento' y 'estado de verificación', pero aparece habilitado"
         );
 
-        /********** Verificación Final — Limpiar **********/
+
+        /********** Lógica de la Prueba — Parte Final **********/
 
         // PASO 8. Presionar 'Limpiar' y verificar que todos los campos se vacían
         ReportManager.info("PASO 8: Presionando el botón Limpiar y verificando que todos los campos se vacían");
         personaPage.clickLimpiarForm();
         Thread.sleep(800);
+
+        /********** Verificación Final — Limpiar **********/
 
         Assert.assertTrue(
             personaPage.formularioAgregarEstaLimpio(),
