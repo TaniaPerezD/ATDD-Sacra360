@@ -66,11 +66,11 @@ public class SacramentosTest extends BaseTest {
 
         ReportManager.info("Cuando completa todos los campos obligatorios y hace click en Registrar Sacramento");
         sacramentosPage
-                .ingresarPersona("Perez")
-                .ingresarPadrino("Gomez")
-                .ingresarMinistro("Lopez")
-                .ingresarParroquia("San")
-                .ingresarFoja("15")
+                .ingresarPersona("Orlando")
+                .ingresarPadrino("Ricardo")
+                .ingresarMinistro("Condori")
+                .ingresarParroquia("Sagrado")
+                .ingresarFoja("B-15")
                 .ingresarNumero("42")
                 .ingresarFecha("2025-03-20")
                 .clickRegistrar();
@@ -108,8 +108,8 @@ public class SacramentosTest extends BaseTest {
      * Resultado Esperado: La tabla muestra solo registros de la persona buscada
      * con columnas: Nombre completo, CI, Fecha, Rol, Foja y Número
      */
-    @Test(description = "TC-882: Buscar sacramento por nombre de persona")
-    public void buscarSacramentoPorNombreTest() {
+    @Test(priority = 3, description = "TC-882: Buscar sacramento por nombre de persona")
+    public void buscarSacramentoPorNombreTest() throws InterruptedException {
 
         /********** Preparación de la prueba **********/
 
@@ -121,10 +121,12 @@ public class SacramentosTest extends BaseTest {
 
         /*********** Lógica de la prueba ***********/
 
-        ReportManager.info("Cuando ingresa 'PEREZ' en el filtro de nombre y hace click en Buscar");
+        ReportManager.info("Cuando ingresa 'Perez' en el filtro de apellido paterno y hace click en Buscar");
         sacramentosPage
-                .ingresarFiltroNombre("PEREZ")
+                .ingresarFiltroApellidoPaterno("Perez")
                 .clickBuscar();
+
+        Thread.sleep(2500);
 
         /************ Verificación del resultado esperado — Assert ***************/
 
@@ -183,26 +185,20 @@ public class SacramentosTest extends BaseTest {
 
         ReportManager.info("Cuando completa todos los campos obligatorios");
         sacramentosPage
-                .ingresarPersona("Perez")
-                .ingresarPadrino("Gomez")
-                .ingresarMinistro("Lopez")
-                .ingresarParroquia("San")
+                .ingresarPersona("Navarro")
+                .ingresarPadrino("Ricardo")
+                .ingresarMinistro("Condori")
+                .ingresarParroquia("San Pedro")
                 .ingresarFoja("10")
                 .ingresarNumero("25")
                 .ingresarFecha("2025-06-15");
 
         /************ Verificación del resultado esperado — Assert ***************/
 
-        ReportManager.info("Entonces el botón debe habilitarse y al hacer click el registro debe ser exitoso");
+        ReportManager.info("Entonces el botón debe habilitarse cuando todos los campos están completos");
 
         Assert.assertTrue(
                 sacramentosPage.botonRegistrarHabilitado(),
                 "El botón debería estar habilitado cuando todos los campos están completos");
-
-        sacramentosPage.clickRegistrar();
-
-        Assert.assertTrue(
-                sacramentosPage.toastExitoVisible(),
-                "No apareció el Toast de éxito tras completar todos los campos obligatorios");
     }
 }

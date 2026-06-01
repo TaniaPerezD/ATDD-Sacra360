@@ -76,8 +76,9 @@ public class SacramentosPage extends BasePage {
     private final By botonPanelFiltros = By.xpath(
         "//button[.//h3[contains(text(),'Filtros de búsqueda')]]"
     );
-    private final By filtroNombre    = By.id("f-nombre");
-    private final By botonBuscar     = By.xpath("//button[normalize-space(text())='Buscar']");
+    private final By filtroNombre          = By.id("f-nombre");
+    private final By filtroApellidoPaterno = By.id("f-apellido_paterno");
+    private final By botonBuscar           = By.xpath("//button[normalize-space(text())='Buscar']");
     private final By filasTabla      = By.xpath("//table//tbody/tr");
     private final By primerFilaNombre = By.xpath("//table//tbody/tr[1]/td[1]");
 
@@ -168,6 +169,11 @@ public class SacramentosPage extends BasePage {
 
     public SacramentosPage ingresarFiltroNombre(String nombre) {
         type(filtroNombre, nombre);
+        return this;
+    }
+
+    public SacramentosPage ingresarFiltroApellidoPaterno(String apellido) {
+        type(filtroApellidoPaterno, apellido);
         return this;
     }
 
