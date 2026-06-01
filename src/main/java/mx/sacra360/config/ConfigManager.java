@@ -34,7 +34,9 @@ public class ConfigManager {
     public static boolean isHeadless()      { return Boolean.parseBoolean(get("headless")); }
     public static int getImplicitWait()     { return Integer.parseInt(get("implicit.wait")); }
     public static int getExplicitWait()     { return Integer.parseInt(get("explicit.wait")); }
-    public static String getTestUser()      { return get("test.user"); }
-    public static String getTestPassword()  { return get("test.password"); }
+    public static String getTestUser()           { return get("test.user"); }
+    public static String getTestPassword()       { return get("test.password"); }
+    public static String getSacramentosUser()    { return get("sacramentos.user"); }
+    public static String getSacramentosPassword(){ return get("sacramentos.password"); }
     public static String getScreenshotDir() { return get("screenshot.dir"); }
 }

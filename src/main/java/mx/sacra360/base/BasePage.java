@@ -3,11 +3,13 @@ package mx.sacra360.base;
 import mx.sacra360.config.ConfigManager;
 import mx.sacra360.driver.DriverFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 
 import java.time.Duration;
 
@@ -58,5 +60,26 @@ public abstract class BasePage {
 
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
+    }
+    protected void selectByVisibleText(By locator, String text) {
+        WebElement el = waitForVisible(locator);
+        new org.openqa.selenium.support.ui.Select(el).selectByVisibleText(text);
+    }
+
+    protected String getAttribute(By locator, String attribute) {
+        return waitForVisible(locator).getAttribute(attribute);
+    }
+
+    // Usar para <input type="date"> en React: sendKeys no funciona bien en Chrome/macOS
+    protected void setDateValue(By locator, String isoDate) {
+        WebElement el = waitForVisible(locator);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript(
+            "var setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;" +
+            "setter.call(arguments[0], arguments[1]);" +
+            "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));" +
+            "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
+            el, isoDate
+        );
     }
 }

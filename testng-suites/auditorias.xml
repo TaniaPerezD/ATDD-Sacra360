@@ -1,0 +1,11 @@
+
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Sacra360 - Suite Completa" verbose="1" parallel="false">
+
+    <test name="Auditoria Aplicacion">
+        <packages>
+            <package name="mx.sacra360.auditorias"/>
+        </packages>
+    </test>
+
+</suite>

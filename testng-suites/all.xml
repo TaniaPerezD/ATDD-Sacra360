@@ -19,4 +19,27 @@
         </packages>
     </test>
 
+    <test name="Usuarios">
+        <packages>
+            <package name="mx.sacra360.usuarios"/>
+        </packages>
+    </test>
+    <test name="Auditoria Aplicacion">
+        <packages>
+            <package name="mx.sacra360.auditorias"/>
+        </packages>
+    </test>
+
+    <test name="Sacramentos">
+        <packages>
+            <package name="mx.sacra360.sacramentos"/>
+        </packages>
+    </test>
+
+    <test name="Personas">
+        <packages>
+            <package name="mx.sacra360.personas"/>
+        </packages>
+    </test>
+
 </suite>
