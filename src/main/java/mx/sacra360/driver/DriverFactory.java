@@ -61,7 +61,6 @@ public class DriverFactory {
         }
 
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(ConfigManager.getImplicitWait()));
         return driver;
     }
 }
