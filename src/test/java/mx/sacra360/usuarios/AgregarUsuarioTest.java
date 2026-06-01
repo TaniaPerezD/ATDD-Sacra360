@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 public class AgregarUsuarioTest extends BaseTest {
 
     @Test(description = "S360-45: Agregar Usuario con datos válidos")
-    public void agregarUsuarioConDatosValidos() throws InterruptedException {
+    public void agregarUsuarioConDatosValidos() throws Exception {
 
         /********** Preparación de la Prueba **********/
 
@@ -114,5 +114,13 @@ public class AgregarUsuarioTest extends BaseTest {
             usuarioPage.mensajeExitoEsVisible(),
             "No se mostró el mensaje de confirmación de registro exitoso del usuario"
         );
+
+        // LIMPIEZA: eliminar usuario creado para permitir re-ejecución
+        ReportManager.info("LIMPIEZA: Eliminando usuario de prueba del sistema");
+        String token = UsuarioPage.obtenerToken();
+        int idUsuario = UsuarioPage.obtenerIdUsuarioPorEmail(token, "isabel.rocha.v@ucb.edu.bo");
+        UsuarioPage.eliminarUsuarioFisico(token, idUsuario);
+        ReportManager.info("LIMPIEZA: Usuario eliminado correctamente");
+        
     }
 }

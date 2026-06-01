@@ -10,13 +10,13 @@ import java.time.Duration;
 
 public class UsuarioPage extends BasePage {
 
-    // ─── Localizadores LOGIN ───────────────────────────────────────────────
+    //  Localizadores LOGIN 
     private final By campoEmail         = By.id("email");
     private final By campoPassword      = By.id("password");
     private final By botonIniciarSesion = By.xpath("//*[@id='root']/div/div[1]/div/div[2]/button");
     private final By botonConfirmarRegistro = By.xpath("//*[@id='root']/div/div/main/div/div[3]/div/div[2]/button[2]");
 
-    // ─── Localizadores FORMULARIO AGREGAR USUARIO ─────────────────────────
+    // Localizadores FORMULARIO AGREGAR USUARIO 
     private final By tabAgregarUsuario  = By.xpath("//*[@id='root']/div/div/main/div/div[1]/button[1]");
     private final By campoNombre           = By.id("nombre");
     private final By campoApellidoPaterno  = By.id("apellido_paterno");
@@ -28,7 +28,7 @@ public class UsuarioPage extends BasePage {
     private final By botonCrearUsuario     = By.xpath("//*[@id='root']/div/div/main/div/div[2]/form/div[2]/button[1]");
     
 
-    // ─── Localizadores VERIFICACIÓN ───────────────────────────────────────
+    //  Localizadores VERIFICACIÓN 
     private final By labelNombre          = By.xpath("//label[contains(text(),'Nombre')]");
     private final By labelApellidoPaterno = By.xpath("//label[contains(text(),'Apellido paterno')]");
     private final By labelApellidoMaterno = By.xpath("//label[contains(text(),'Apellido materno')]");
@@ -48,10 +48,8 @@ public class UsuarioPage extends BasePage {
     private final By botonGuardarCambios = By.xpath("/html/body/div[2]/div/div[3]/button[2]");
     private final By campoNombreReadOnly = By.xpath("//*[@id='nombre' and @readonly]");
 
-    // ══════════════════════════════════════════════════════════════════════
-    // MÉTODOS DE LOGIN
-    // ══════════════════════════════════════════════════════════════════════
 
+    // MÉTODOS DE LOGIN
     public void iniciarSesion(String email, String password) throws InterruptedException {
         Thread.sleep(1000);
         type(campoEmail, email);
@@ -61,9 +59,7 @@ public class UsuarioPage extends BasePage {
         click(botonIniciarSesion);
     }
 
-    // ══════════════════════════════════════════════════════════════════════
     // MÉTODOS DE NAVEGACIÓN
-    // ══════════════════════════════════════════════════════════════════════
 
     public void navegarAUsuarios() throws InterruptedException {
         driver.get("https://fronttaller0.vercel.app/usuarios");
@@ -75,10 +71,8 @@ public class UsuarioPage extends BasePage {
         Thread.sleep(1000);
     }
 
-    // ══════════════════════════════════════════════════════════════════════
-    // MÉTODOS DEL FORMULARIO
-    // ══════════════════════════════════════════════════════════════════════
 
+    // MÉTODOS DEL FORMULARIO
     public void ingresarNombre(String nombre) throws InterruptedException {
         type(campoNombre, nombre);
         Thread.sleep(500);
@@ -121,10 +115,8 @@ public class UsuarioPage extends BasePage {
         Thread.sleep(500);
     }
 
-    // ══════════════════════════════════════════════════════════════════════
-    // MÉTODOS DE VERIFICACIÓN
-    // ══════════════════════════════════════════════════════════════════════
 
+    // MÉTODOS DE VERIFICACIÓN
     public boolean formularioEsVisible() {
         return isDisplayed(labelNombre)
             && isDisplayed(labelApellidoPaterno)
@@ -189,5 +181,56 @@ public class UsuarioPage extends BasePage {
     public void clickGuardarCambios() throws InterruptedException {
         click(botonGuardarCambios);
         Thread.sleep(500);
+    }
+
+    //PAra agreagr usuario eliminar fisico 
+    public static String obtenerToken() throws Exception {
+        java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+        String body = "{\"email\":\"tania.perez.d@ucb.edu.bo\",\"password\":\"M4rshallLee#\"}";
+        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+            .uri(java.net.URI.create("https://back-sacramentos.onrender.com/api/usuarios/"))
+            .header("Content-Type", "application/json")
+            .POST(java.net.http.HttpRequest.BodyPublishers.ofString(body))
+            .build();
+        java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+        String json = response.body();
+        System.out.println("RESPONSE LOGIN: " + json);
+        int idx = json.indexOf("\"token\":\"") + 9;
+        return json.substring(idx, json.indexOf("\"", idx));
+    }
+
+    public static void eliminarUsuarioFisico(String token, int idUsuario) throws Exception {
+        java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+            .uri(java.net.URI.create("https://back-sacramentos.onrender.com/api/usuarios/eliminar-fisico/" + idUsuario))
+            .header("Content-Type", "application/json")
+            .header("x-token", token)
+            .POST(java.net.http.HttpRequest.BodyPublishers.noBody())
+            .build();
+        java.net.http.HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static int obtenerIdUsuarioPorEmail(String token, String email) throws Exception {
+        java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+        // buscar en varias páginas
+        for (int page = 1; page <= 5; page++) {
+            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                .uri(java.net.URI.create("https://back-sacramentos.onrender.com/api/usuarios/?page=" + page))
+                .header("x-token", token)
+                .GET()
+                .build();
+            java.net.http.HttpResponse<String> response = client.send(request,
+                java.net.http.HttpResponse.BodyHandlers.ofString());
+            String json = response.body();
+            int emailIdx = json.indexOf(email);
+            if (emailIdx == -1) continue;
+            // buscar id_usuario antes del email
+            String before = json.substring(0, emailIdx);
+            int idIdx = before.lastIndexOf("\"id_usuario\":") + 13;
+            String idStr = before.substring(idIdx).trim().replaceAll("[^0-9]", "");
+            System.out.println("ID encontrado: " + idStr);
+            return Integer.parseInt(idStr.substring(0, idStr.length() > 4 ? 4 : idStr.length()));
+        }
+        throw new RuntimeException("Usuario no encontrado: " + email);
     }
 }
