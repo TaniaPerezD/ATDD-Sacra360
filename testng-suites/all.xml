@@ -19,4 +19,10 @@
         </packages>
     </test>
 
+    <test name="Usuarios">
+        <packages>
+            <package name="mx.sacra360.usuarios"/>
+        </packages>
+    </test>
+
 </suite>
