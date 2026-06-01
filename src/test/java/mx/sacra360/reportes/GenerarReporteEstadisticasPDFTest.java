@@ -1,6 +1,7 @@
 package mx.sacra360.reportes;
 
 import mx.sacra360.base.BaseTest;
+import mx.sacra360.config.ConfigManager;
 import mx.sacra360.pages.usuarios.UsuarioPage;
 import mx.sacra360.utils.ReportManager;
 import org.openqa.selenium.By;
@@ -50,7 +51,7 @@ public class GenerarReporteEstadisticasPDFTest extends BaseTest {
         ReportManager.info("PASO 1: Iniciando sesión en el sistema");
         UsuarioPage usuarioPage = new UsuarioPage();
         Thread.sleep(2000);
-        usuarioPage.iniciarSesion("ivonne.colque@ucb.edu.bo", "Wybma20HoG23!");
+        usuarioPage.iniciarSesion(ConfigManager.getTestUser(), ConfigManager.getTestPassword());
         Thread.sleep(5000);
 
         // PASO 2. Navegar al Dashboard
