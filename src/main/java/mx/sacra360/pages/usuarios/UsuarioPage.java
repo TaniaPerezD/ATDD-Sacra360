@@ -199,6 +199,17 @@ public class UsuarioPage extends BasePage {
         return json.substring(idx, json.indexOf("\"", idx));
     }
 
+    public static void desbloquearUsuario(String token, int idUsuario) throws Exception {
+        java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
+        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+            .uri(java.net.URI.create("https://back-sacramentos.onrender.com/api/usuarios/desbloquear/" + idUsuario))
+            .header("Content-Type", "application/json")
+            .header("x-token", token)
+            .POST(java.net.http.HttpRequest.BodyPublishers.noBody())
+            .build();
+        client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+    }
+
     public static void eliminarUsuarioFisico(String token, int idUsuario) throws Exception {
         java.net.http.HttpClient client = java.net.http.HttpClient.newHttpClient();
         java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()

@@ -55,7 +55,7 @@
                 <version>3.2.5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng-suites/all.xml</suiteXmlFile>
+                        <suiteXmlFile>testng-suites/${suite}.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
