@@ -8,6 +8,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -15,6 +17,7 @@ import org.testng.annotations.Test;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Properties;
+import java.time.Duration;
 
 /****************************************
  * Historia de Usuario:
@@ -66,22 +69,22 @@ public class AuditoriaAplicacionFiltrosTest {
         }
     }
 
-    @Test(description = "S360-89: Filtrar registros de auditoría de aplicación por código de respuesta 200")
+   @Test(description = "S360-89: Filtrar registros de auditoría de aplicación por código de respuesta 200")
     public void pruebaAuditoriaAplicacion() throws InterruptedException {
-        
-        /********** Preparación de la Prueba **********/
+
         String baseUrl = prop.getProperty("base.url");
         String usuario = prop.getProperty("test.user");
         String contrasenia = prop.getProperty("test.password");
 
-        // PASO 1. Ingresar a la página base y comprobar estado de sesión
-        System.out.println("PASO 1: Navegando a la URL base y verificando sesión activa");
+        // PASO 1. Navegar a la URL base
+        System.out.println("PASO 1: Navegando a la URL base");
         driver.get(baseUrl);
         Thread.sleep(2000);
 
+        // Cerrar sesión previa si existe
         List<WebElement> loginInput = driver.findElements(By.xpath("//*[@id=\"email\"]"));
         if (loginInput.isEmpty()) {
-            System.out.println("Sesión previa detectada de forma síncrona. Ejecutando logout...");
+            System.out.println("Sesión previa detectada. Ejecutando logout...");
             driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/header/div[2]/div/button")).click();
             Thread.sleep(1000);
             driver.findElement(By.xpath("/html/body/div[2]/div/div[6]/button[3]")).click();
@@ -90,66 +93,70 @@ public class AuditoriaAplicacionFiltrosTest {
             Thread.sleep(2000);
         }
 
-        // PASO 2. Navegar al Dashboard
-        ReportManager.info("PASO 2: Navegando al Dashboard en el menú lateral");
-        WebElement botonDashboard = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/aside/nav/a[3]"));
-        // Forzamos el clic con JavaScript para ignorar el popup de SweetAlert
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", botonDashboard);
-        Thread.sleep(3000);
+        // PASO 2. Introducir correo electrónico
+        System.out.println("PASO 2: Introduciendo correo electrónico");
+        driver.findElement(By.xpath("//*[@id=\"email\"]")).sendKeys(usuario);
+        Thread.sleep(800);
 
-        // PASO 3. Introducir contraseña válida
-        System.out.println("PASO 3: Introduciendo contraseña válida");
+        // PASO 3. Introducir contraseña
+        System.out.println("PASO 3: Introduciendo contraseña");
         driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys(contrasenia);
         Thread.sleep(800);
 
-        // PASO 4. Hacer clic en el botón de iniciar sesión
-        System.out.println("PASO 4: Haciendo clic en el botón de iniciar sesión");
+        // PASO 4. Hacer clic en iniciar sesión
+        System.out.println("PASO 4: Haciendo clic en iniciar sesión");
         driver.findElement(By.xpath("//*[@id=\"root\"]/div/div[1]/div/div[2]/button")).click();
-        Thread.sleep(3000);
+        Thread.sleep(5000); // esperar login + servidor Render
 
-        // PASO 5. Navegar directamente a la sección de Auditoría de Aplicación
-        System.out.println("PASO 5: Navegando a la sección de auditoría de aplicación");
+        // PASO 5. Navegar directamente a auditoría de aplicación
+        System.out.println("PASO 5: Navegando a auditoría de aplicación");
         driver.get(baseUrl + "/auditoria-aplicacion");
         Thread.sleep(4000);
 
-        // PASO 6. Desplegar el menú superior (si no se encuentra expandido por defecto)
+        // PASO 6. Desplegar menú superior si está colapsado
         System.out.println("PASO 6: Gestionando visibilidad del menú superior");
         try {
-            driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/header/div[1]/button")).click();
+            driver.findElement(By.xpath(
+                "//*[@id=\"root\"]/div/div/main/header/div[1]/button")).click();
             Thread.sleep(1000);
         } catch (Exception e) {
-            System.out.println("Menú superior ya se encontraba desplegado de forma nativa.");
+            System.out.println("Menú ya estaba desplegado.");
         }
-        
-        // PASO 7. Hacer clic en la opción "Aplicación" en el menú lateral (vínculo a[4])
-        System.out.println("PASO 7: Seleccionando 'Aplicación' en el menú lateral (a[4])");
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/aside/nav/a[4]")).click();
+
+        // PASO 7. Hacer clic en "Aplicación" en el menú lateral
+        System.out.println("PASO 7: Seleccionando Aplicación en el menú lateral");
+        WebDriverWait localWait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebElement linkAplicacion = localWait.until(
+            ExpectedConditions.elementToBeClickable(
+                By.xpath("//*[@id=\"root\"]/div/div/aside/nav/a[4]")
+            )
+        );
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", linkAplicacion);
         Thread.sleep(3000);
 
-        /********** Lógica de la Prueba **********/
-
-        // PASO 8. Hacer clic en el botón para desplegar el panel de filtros
-        System.out.println("PASO 8: Desplegando el panel de componentes para filtros");
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div/div[1]/button")).click();
+        // PASO 8. Desplegar panel de filtros
+        System.out.println("PASO 8: Desplegando panel de filtros");
+        driver.findElement(By.xpath(
+            "//*[@id=\"root\"]/div/div/main/div/div/div[1]/button")).click();
         Thread.sleep(2000);
 
-        // PASO 9. Seleccionar la opción "200" dentro del componente select de respuestas
-        System.out.println("PASO 9: Seleccionando el valor de opción '200' (div[8])");
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div/div[1]/div/div[1]/div[8]/select/option[2]")).click();
+        // PASO 9. Seleccionar opción "200"
+        System.out.println("PASO 9: Seleccionando código 200");
+        driver.findElement(By.xpath(
+            "//*[@id=\"root\"]/div/div/main/div/div/div[1]/div/div[1]/div[8]/select/option[2]")).click();
         Thread.sleep(1000);
 
-        // PASO 10. Hacer clic en el botón para aplicar el filtro seleccionado
-        System.out.println("PASO 10: Presionando el botón para aplicar la consulta");
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div/div[1]/div/div[2]/button[1]")).click();
+        // PASO 10. Aplicar filtro
+        System.out.println("PASO 10: Aplicando filtro");
+        driver.findElement(By.xpath(
+            "//*[@id=\"root\"]/div/div/main/div/div/div[1]/div/div[2]/button[1]")).click();
         Thread.sleep(5000);
 
-        /********** Verificación del Resultado Esperado - Assert **********/
-
-        // PASO 11. Verificar el código de respuesta del primer registro de la tabla resultante
-        System.out.println("PASO 11 - VERIFICACIÓN: Validando código del primer elemento filtrado");
-        WebElement celdaCodigo = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div/div[2]/div/table/tbody/tr[1]/td[1]/div/div/span[1]"));
-        String txtCodigoObtenido = celdaCodigo.getText().trim();
-        
-        Assert.assertEquals(txtCodigoObtenido, "200", "El código del registro recuperado no corresponde a '200'");
-    }
+        // PASO 11. Verificar resultado
+        System.out.println("PASO 11: Verificando código del primer registro");
+        WebElement celdaCodigo = driver.findElement(By.xpath(
+            "//*[@id=\"root\"]/div/div/main/div/div/div[2]/div/table/tbody/tr[1]/td[1]/div/div/span[1]"));
+        Assert.assertEquals(celdaCodigo.getText().trim(), "200",
+            "El código del registro no corresponde a '200'");
+    } 
 }

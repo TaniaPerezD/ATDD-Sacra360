@@ -6,8 +6,13 @@ import mx.sacra360.utils.ReportManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.time.Duration;
+import java.util.List;
+
 
 /****************************************
  * Historia de Usuario:
@@ -53,10 +58,16 @@ public class GenerarReporteEstadisticasPDFTest extends BaseTest {
         usuarioPage.iniciarSesion("ivonne.colque@ucb.edu.bo", "Wybma20HoG23!");
         Thread.sleep(5000);
 
-        // PASO 2. Navegar al Dashboard
-        ReportManager.info("PASO 2: Navegando al Dashboard en el menú lateral");
-        WebElement botonDashboard = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/aside/nav/a[3]"));
-        // Usamos JavascriptExecutor para evitar choques con popups
+        /// PASO 2. Navegar al Dashboard
+        ReportManager.info("PASO 2: Navegando al Dashboard");
+
+        // Esperar a que el login complete y el nav esté disponible
+        WebDriverWait localWait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        WebElement botonDashboard = localWait.until(
+            ExpectedConditions.elementToBeClickable(
+                By.xpath("//*[@id=\"root\"]/div/div/aside/nav/a[3]")
+            )
+        );
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", botonDashboard);
         Thread.sleep(3000);
 
@@ -66,21 +77,28 @@ public class GenerarReporteEstadisticasPDFTest extends BaseTest {
 
         // PASO 3. Ingresar valor inicial
         ReportManager.info("PASO 3: Ingresando valor inicial (1) en el filtro");
-        WebElement inputInicio = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div[1]/div/div[2]/div[1]/div[5]/input"));
+        List<WebElement> inputs = localWait.until(
+            ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.xpath("//input[@type='number']")
+            )
+        );
+        WebElement inputInicio = inputs.get(0);
         inputInicio.clear();
         inputInicio.sendKeys("1");
-        Thread.sleep(1000);
 
         // PASO 4. Ingresar valor final
         ReportManager.info("PASO 4: Ingresando valor final (1000) en el filtro");
-        WebElement inputFin = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div[1]/div/div[2]/div[1]/div[6]/input"));
+        WebElement inputFin = inputs.get(1);
         inputFin.clear();
         inputFin.sendKeys("1000");
-        Thread.sleep(1000);
 
         // PASO 5. Scroll hasta vista previa
         ReportManager.info("PASO 5: Haciendo scroll hasta la sección de vista previa");
-        WebElement botonVistaPrevia = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div[3]/div/div[2]/button"));
+        WebElement botonVistaPrevia = localWait.until(
+            ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[contains(text(),'Vista previa') or contains(text(),'vista previa') or contains(text(),'Previsualizar') or contains(text(),'Generar vista')]")
+            )
+        );
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", botonVistaPrevia);
         Thread.sleep(1500);
 

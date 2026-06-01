@@ -129,24 +129,28 @@ public class SacramentosPage extends BasePage {
     // Cada campo de autocompletado: escribe el texto y espera el dropdown
     public SacramentosPage ingresarPersona(String nombre) {
         type(campoPersona, nombre);
+        try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
         waitForClickable(primerResultadoDropdown).click();
         return this;
     }
 
     public SacramentosPage ingresarPadrino(String nombre) {
         type(campoPadrino, nombre);
+        try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
         waitForClickable(primerResultadoDropdown).click();
         return this;
     }
 
     public SacramentosPage ingresarMinistro(String nombre) {
         type(campoMinistro, nombre);
+        try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
         waitForClickable(primerResultadoDropdown).click();
         return this;
     }
 
     public SacramentosPage ingresarParroquia(String nombre) {
         type(campoParroquia, nombre);
+        try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
         waitForClickable(primerResultadoDropdown).click();
         return this;
     }
@@ -220,4 +224,6 @@ public class SacramentosPage extends BasePage {
         List<WebElement> filas = driver.findElements(filasTabla);
         return filas.size();
     }
+
+    
 }

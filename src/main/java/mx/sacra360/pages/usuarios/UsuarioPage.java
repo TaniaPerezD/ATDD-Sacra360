@@ -62,7 +62,13 @@ public class UsuarioPage extends BasePage {
     // MÉTODOS DE NAVEGACIÓN
 
     public void navegarAUsuarios() throws InterruptedException {
+        // Esperar a que el login redirija fuera de la pantalla de login
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        wait.until(d -> !d.getCurrentUrl().contains("login") && 
+                        !d.getCurrentUrl().equals(d.getCurrentUrl().replace("/usuarios", "")));
+        
         driver.get("https://fronttaller0.vercel.app/usuarios");
+        Thread.sleep(3000); // dar tiempo al servidor lento de Render
         waitForClickable(tabAgregarUsuario);
     }
 
