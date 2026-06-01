@@ -43,8 +43,9 @@ public class GenerarReporteEstadisticasPDFTest extends BaseTest {
     @Test(description = "S360-90: Generar y descargar reporte PDF de estadísticas")
     public void generarReporteEstadisticasPDF() throws InterruptedException {
 
-        /********** Preparación de la Prueba **********/
-
+        /********** 1. PREPARACIÓN DE LA PRUEBA (ARRANGE) **********/
+        // Todo lo necesario para dejar el sistema listo antes de interactuar
+        
         // PASO 1. Iniciar sesión con credenciales válidas
         ReportManager.info("PASO 1: Iniciando sesión en el sistema");
         UsuarioPage usuarioPage = new UsuarioPage();
@@ -52,14 +53,16 @@ public class GenerarReporteEstadisticasPDFTest extends BaseTest {
         usuarioPage.iniciarSesion("ivonne.colque@ucb.edu.bo", "Wybma20HoG23!");
         Thread.sleep(5000);
 
-        /********** Navegación **********/
-
         // PASO 2. Navegar al Dashboard
         ReportManager.info("PASO 2: Navegando al Dashboard en el menú lateral");
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/aside/nav/a[3]")).click();
+        WebElement botonDashboard = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/aside/nav/a[3]"));
+        // Usamos JavascriptExecutor para evitar choques con popups
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", botonDashboard);
         Thread.sleep(3000);
 
-        /********** Lógica de la Prueba **********/
+
+        /********** 2. EJECUCIÓN Y LÓGICA DE LA PRUEBA (ACT) **********/
+        // Los pasos y clics reales que ejecutan la funcionalidad a probar
 
         // PASO 3. Ingresar valor inicial
         ReportManager.info("PASO 3: Ingresando valor inicial (1) en el filtro");
@@ -86,20 +89,16 @@ public class GenerarReporteEstadisticasPDFTest extends BaseTest {
         botonVistaPrevia.click();
         Thread.sleep(5000);
 
-        /********** Verificaciones Parciales **********/
-
-        // PASO 7. Verificar que la vista previa exista
+        // PASO 7. Verificar que la vista previa exista (Verificación Intermedia)
         ReportManager.info("PASO 7: Verificando que la vista previa exista en pantalla");
         WebElement vistaPrevia = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div[3]/div/div[3]"));
         Assert.assertTrue(vistaPrevia.isDisplayed(), "La vista previa de estadísticas no fue generada o no es visible");
-
-        /********** Generación y Descarga de PDF **********/
 
         // PASO 8. Generar PDF
         ReportManager.info("PASO 8: Haciendo clic en generar reporte PDF");
         WebElement botonPDF = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div[3]/div/div[4]/button"));
         botonPDF.click();
-        Thread.sleep(10000); // Tiempo extendido para permitir la renderización del PDF
+        Thread.sleep(10000); // Tiempo extendido para renderización
 
         // PASO 9. Descargar PDF
         ReportManager.info("PASO 9: Haciendo clic en descargar reporte PDF");
@@ -107,7 +106,9 @@ public class GenerarReporteEstadisticasPDFTest extends BaseTest {
         botonDescargar.click();
         Thread.sleep(2000);
 
-        /********** Verificación del Resultado Esperado - Assert Final **********/
+
+        /********** VERIFICACIÓN DEL RESULTADO (ASSERT)   **********/
+        // Validamos que el resultado final sea exactamente el esperado
 
         // PASO 10. Verificar la etiqueta final
         ReportManager.info("PASO 10 - VERIFICACIÓN: Confirmando que la etiqueta final aparece correctamente");
