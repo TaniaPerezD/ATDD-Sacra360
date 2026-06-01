@@ -126,29 +126,37 @@ public class SacramentosPage extends BasePage {
         return this;
     }
 
-    // Cada campo de autocompletado: escribe el texto y espera el dropdown
+    // Cada campo de autocompletado: escribe el texto, espera la respuesta del servidor
+    // y hace click en el primer resultado del dropdown
     public SacramentosPage ingresarPersona(String nombre) {
-        type(campoPersona, nombre);
-        waitForClickable(primerResultadoDropdown).click();
+        typeAutoComplete(campoPersona, nombre);
         return this;
     }
 
     public SacramentosPage ingresarPadrino(String nombre) {
-        type(campoPadrino, nombre);
-        waitForClickable(primerResultadoDropdown).click();
+        typeAutoComplete(campoPadrino, nombre);
         return this;
     }
 
     public SacramentosPage ingresarMinistro(String nombre) {
-        type(campoMinistro, nombre);
-        waitForClickable(primerResultadoDropdown).click();
+        typeAutoComplete(campoMinistro, nombre);
         return this;
     }
 
     public SacramentosPage ingresarParroquia(String nombre) {
-        type(campoParroquia, nombre);
-        waitForClickable(primerResultadoDropdown).click();
+        typeAutoComplete(campoParroquia, nombre);
         return this;
+    }
+
+    // El campo de búsqueda React necesita un breve pause entre el typing y el click
+    // para que la llamada al API devuelva resultados y el dropdown se renderice
+    private void typeAutoComplete(By campo, String texto) {
+        WebElement el = waitForVisible(campo);
+        el.click();
+        el.clear();
+        el.sendKeys(texto);
+        try { Thread.sleep(2000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        waitForClickable(primerResultadoDropdown).click();
     }
 
     public SacramentosPage ingresarFoja(String foja) {

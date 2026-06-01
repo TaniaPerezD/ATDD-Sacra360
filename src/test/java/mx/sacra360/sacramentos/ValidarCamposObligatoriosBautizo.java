@@ -19,13 +19,15 @@ public class ValidarCamposObligatoriosBautizo extends BaseTest {
      * Verificar que el sistema impide registrar un sacramento si faltan
      * campos obligatorios.
      *
-     * PASO 1. Abrir el formulario "Agregar Sacramento" con campos vacíos
+     * PASO 1. Abrir el formulario "Agregar Sacramento" con todos los campos vacíos
      * PASO 2. Verificar que el botón "Registrar Sacramento" está deshabilitado
-     * PASO 3. Completar todos los campos obligatorios
-     * PASO 4. Verificar que el botón se habilita y el registro es exitoso
+     * PASO 3. Completar solo los campos de búsqueda (Persona, Padrino, Ministro, Parroquia)
+     * PASO 4. Verificar que el botón sigue deshabilitado (faltan Foja, Número y Fecha)
+     * PASO 5. Completar los campos restantes (Foja, Número y Fecha)
+     * PASO 6. Verificar que el botón se habilita al tener todos los campos completos
      *
-     * Resultado Esperado: Botón deshabilitado con campos vacíos;
-     * se habilita solo cuando todos los campos están completos
+     * Resultado Esperado: El botón "Registrar Sacramento" se habilita únicamente
+     * cuando todos los campos obligatorios están completos, no antes.
      *
      * Para ejecutar solo este test:
      *   mvn clean test -Dtest=ValidarCamposObligatoriosBautizo
@@ -42,42 +44,57 @@ public class ValidarCamposObligatoriosBautizo extends BaseTest {
         sacramentosPage.navegarASacramentos();
     }
 
-    @Test(priority = 1, description = "TC-898: El botón Registrar permanece deshabilitado con campos vacíos")
-    public void validarCamposObligatoriosTest() {
+    @Test(priority = 1, description = "TC-898: El botón Registrar se habilita solo cuando todos los campos están completos")
+    public void validarCamposObligatoriosTest() throws InterruptedException {
 
         /********** Preparación de la prueba **********/
 
-        ReportManager.info("Dado que el usuario abre el formulario Agregar Sacramento con todos los campos vacíos");
+        ReportManager.info("Dado que el usuario abre el formulario Agregar Sacramento");
         sacramentosPage
                 .seleccionarTipoBautizo()
                 .abrirPestanaAgregar();
 
-        /*********** Lógica de la prueba — verificación con campos vacíos ***********/
+        /*********** VERIFICACIÓN 1 — formulario vacío ***********/
 
-        ReportManager.info("Entonces el botón 'Registrar Sacramento' debe estar deshabilitado");
-
+        ReportManager.info("PASO 2 — VERIFICACIÓN: El botón debe estar deshabilitado con todos los campos vacíos");
         Assert.assertFalse(
                 sacramentosPage.botonRegistrarHabilitado(),
-                "El botón debería estar deshabilitado cuando los campos están vacíos");
+                "FALLO: El botón estaba habilitado con el formulario vacío");
 
-        /*********** Lógica de la prueba — completar campos ***********/
+        /*********** Acción — llenar solo los campos de búsqueda ***********/
 
-        ReportManager.info("Cuando completa todos los campos obligatorios");
+        ReportManager.info("PASO 3: Completando solo los campos de búsqueda (Persona, Padrino, Ministro, Parroquia)");
         sacramentosPage
                 .ingresarPersona("Navarro")
                 .ingresarPadrino("Ricardo")
                 .ingresarMinistro("Condori")
-                .ingresarParroquia("San Pedro")
+                .ingresarParroquia("San Pedro");
+
+        Thread.sleep(1000);
+
+        /*********** VERIFICACIÓN 2 — campos de búsqueda completos, faltan Foja/Número/Fecha ***********/
+
+        ReportManager.info("PASO 4 — VERIFICACIÓN: El botón debe seguir deshabilitado sin Foja, Número y Fecha");
+        Assert.assertFalse(
+                sacramentosPage.botonRegistrarHabilitado(),
+                "FALLO: El botón se habilitó sin completar Foja, Número y Fecha");
+
+        /*********** Acción — completar los campos restantes ***********/
+
+        ReportManager.info("PASO 5: Completando los campos restantes (Foja, Número y Fecha)");
+        sacramentosPage
                 .ingresarFoja("10")
                 .ingresarNumero("25")
                 .ingresarFecha("2025-06-15");
 
-        /************ Verificación del resultado esperado — Assert ***************/
+        // Pausa para que React procese los cambios y recalcule el estado del botón
+        Thread.sleep(2000);
 
-        ReportManager.info("Entonces el botón debe habilitarse cuando todos los campos están completos");
+        /*********** VERIFICACIÓN 3 — todos los campos completos ***********/
 
+        ReportManager.info("PASO 6 — VERIFICACIÓN FINAL: El botón debe habilitarse con todos los campos completos");
         Assert.assertTrue(
                 sacramentosPage.botonRegistrarHabilitado(),
-                "El botón debería estar habilitado cuando todos los campos están completos");
+                "FALLO: El botón no se habilitó a pesar de tener todos los campos completos");
     }
 }
