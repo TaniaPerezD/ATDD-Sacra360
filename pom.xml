@@ -17,6 +17,8 @@
         <testng.version>7.10.2</testng.version>
         <webdrivermanager.version>5.9.2</webdrivermanager.version>
         <extentreports.version>5.1.2</extentreports.version>
+        <!-- Suite por defecto: se sobreescribe con -Dsuite=login -->
+        <suite>all</suite>
     </properties>
 
     <dependencies>
