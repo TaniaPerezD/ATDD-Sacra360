@@ -81,7 +81,7 @@ public class AgregarUsuarioEmailDuplicadoTest extends BaseTest {
 
         // PASO 7. Seleccionar una fecha de nacimiento válida
         ReportManager.info("PASO 7: Seleccionando fecha de nacimiento válida");
-        usuarioPage.ingresarFechaNacimiento("18-06-2005");
+        usuarioPage.ingresarFechaNacimiento("2005-06-18");
         Thread.sleep(800);
 
         // PASO 8. Ingresar correo electrónico que ya existe en el sistema

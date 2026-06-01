@@ -10,6 +10,9 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import java.time.Duration;
 
 public class DriverFactory {
@@ -56,6 +59,11 @@ public class DriverFactory {
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions opts = new ChromeOptions();
                 if (headless) opts.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+                Map<String, Object> prefs = new HashMap<>();
+                prefs.put("credentials_enable_service", false);
+                prefs.put("profile.password_manager_enabled", false);
+                opts.setExperimentalOption("prefs", prefs);
+                opts.addArguments("--disable-features=AutofillUI");
                 driver = new ChromeDriver(opts);
             }
         }

@@ -122,24 +122,24 @@ public class SacramentosTest extends BaseTest {
 
         /*********** Lógica de la prueba ***********/
 
-        ReportManager.info("Cuando ingresa 'Perez' en el filtro de apellido paterno y hace click en Buscar");
+        ReportManager.info("Cuando ingresa 'Pérez' en el filtro de apellido paterno y hace click en Buscar");
         sacramentosPage
-                .ingresarFiltroApellidoPaterno("Perez")
+                .ingresarFiltroApellidoPaterno("Pérez")
                 .clickBuscar();
 
         Thread.sleep(2500);
 
         /************ Verificación del resultado esperado — Assert ***************/
 
-        ReportManager.info("Entonces la tabla debe mostrar al menos un resultado que contenga 'Perez'");
+        ReportManager.info("Entonces la tabla debe mostrar al menos un resultado que contenga 'Pérez'");
 
         Assert.assertTrue(
                 sacramentosPage.cantidadResultados() >= 1,
                 "Se esperaba al menos 1 resultado pero la tabla está vacía");
 
         Assert.assertTrue(
-                sacramentosPage.obtenerNombrePrimerResultado().toUpperCase().contains("PEREZ"),
-                "El primer resultado no contiene 'Perez'. Se obtuvo: "
+                sacramentosPage.obtenerNombrePrimerResultado().contains("Pérez"),
+                "El primer resultado no contiene 'Pérez'. Se obtuvo: "
                         + sacramentosPage.obtenerNombrePrimerResultado());
     }
 

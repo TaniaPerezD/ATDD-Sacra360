@@ -14,7 +14,7 @@ public class UsuarioPage extends BasePage {
     private final By campoEmail         = By.id("email");
     private final By campoPassword      = By.id("password");
     private final By botonIniciarSesion = By.xpath("//*[@id='root']/div/div[1]/div/div[2]/button");
-    private final By botonConfirmarRegistro = By.xpath("/html/body/div[2]/div/div[3]/button[2]");
+    private final By botonConfirmarRegistro = By.xpath("//button[normalize-space(text())='Sí, registrar']");
 
     // Localizadores FORMULARIO AGREGAR USUARIO 
     private final By tabAgregarUsuario  = By.xpath("//*[@id='root']/div/div/main/div/div[1]/button[1]");
@@ -42,7 +42,7 @@ public class UsuarioPage extends BasePage {
 
     // Localizadores Buscar/Editar
     private final By tabBuscarEditar     = By.xpath("//*[@id='root']/div/div/main/div/div[1]/button[2]");
-    private final By filaUsuario         = By.xpath("//*[@id='root']/div/div/main/div/div[3]/div[2]/div/div/table/tbody/tr[6]");
+    private final By filaUsuario         = By.xpath("//table//tbody/tr[td[contains(text(),'ivonne.colque@ucb.edu.bo')]]");
     private final By campoFechaEdicion   = By.id("fecha_nacimiento");
     private final By selectRolEdicion    = By.id("id_rol");
     private final By botonGuardarCambios = By.xpath("/html/body/div[2]/div/div[3]/button[2]");
@@ -89,7 +89,7 @@ public class UsuarioPage extends BasePage {
     }
 
     public void ingresarFechaNacimiento(String fecha) throws InterruptedException {
-        type(campoFechaNac, fecha);
+        setDateValue(campoFechaNac, fecha);
         Thread.sleep(500);
     }
 
@@ -167,7 +167,7 @@ public class UsuarioPage extends BasePage {
     }
 
     public String editarFechaNacimiento(String fecha) throws InterruptedException {
-        type(campoFechaEdicion, fecha);
+        setDateValue(campoFechaEdicion, fecha);
         Thread.sleep(500);
         return fecha;
     }
