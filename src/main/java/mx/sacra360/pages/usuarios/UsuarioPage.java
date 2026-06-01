@@ -1,0 +1,153 @@
+package mx.sacra360.pages.usuarios;
+
+import mx.sacra360.base.BasePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.time.Duration;
+
+public class UsuarioPage extends BasePage {
+
+    // ─── Localizadores LOGIN ───────────────────────────────────────────────
+    private final By campoEmail         = By.id("email");
+    private final By campoPassword      = By.id("password");
+    private final By botonIniciarSesion = By.xpath("//*[@id='root']/div/div[1]/div/div[2]/button");
+    private final By botonConfirmarRegistro = By.xpath("//*[@id='root']/div/div/main/div/div[3]/div/div[2]/button[2]");
+
+    // ─── Localizadores FORMULARIO AGREGAR USUARIO ─────────────────────────
+    private final By tabAgregarUsuario  = By.xpath("//*[@id='root']/div/div/main/div/div[1]/button[1]");
+    private final By campoNombre           = By.id("nombre");
+    private final By campoApellidoPaterno  = By.id("apellido_paterno");
+    private final By campoApellidoMaterno  = By.id("apellido_materno");
+    private final By campoFechaNac         = By.id("fecha_nacimiento");
+    private final By campoEmailUsuario     = By.id("email");
+    private final By selectRol             = By.id("id_rol");
+    private final By selectEstado          = By.id("activo");
+    private final By botonCrearUsuario     = By.xpath("//*[@id='root']/div/div/main/div/div[2]/form/div[2]/button[1]");
+    
+
+    // ─── Localizadores VERIFICACIÓN ───────────────────────────────────────
+    private final By labelNombre          = By.xpath("//label[contains(text(),'Nombre')]");
+    private final By labelApellidoPaterno = By.xpath("//label[contains(text(),'Apellido paterno')]");
+    private final By labelApellidoMaterno = By.xpath("//label[contains(text(),'Apellido materno')]");
+    private final By labelFecha           = By.xpath("//label[contains(text(),'Fecha de nacimiento')]");
+    private final By labelEmail           = By.xpath("//label[contains(text(),'Email')]");
+    private final By labelRol             = By.xpath("//label[contains(text(),'Rol')]");
+    private final By labelEstado          = By.xpath("//label[contains(text(),'Estado')]");
+    //private final By mensajeExito         = By.xpath("//*[contains(@class,'success') or contains(@class,'toast') or contains(text(),'exitosamente') or contains(text(),'registrado')]");
+    private final By mensajeExito = By.xpath("//*[contains(text(),'Usuario creado correctamente') or contains(text(),'Éxito') or contains(text(),'exitosamente')]");
+    private final By mensajeError = By.cssSelector(".text-rose-800");
+
+    // ══════════════════════════════════════════════════════════════════════
+    // MÉTODOS DE LOGIN
+    // ══════════════════════════════════════════════════════════════════════
+
+    public void iniciarSesion(String email, String password) throws InterruptedException {
+        Thread.sleep(1000);
+        type(campoEmail, email);
+        Thread.sleep(800);
+        type(campoPassword, password);
+        Thread.sleep(600);
+        click(botonIniciarSesion);
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // MÉTODOS DE NAVEGACIÓN
+    // ══════════════════════════════════════════════════════════════════════
+
+    public void navegarAUsuarios() throws InterruptedException {
+        driver.get("https://fronttaller0.vercel.app/usuarios");
+        Thread.sleep(2000);
+    }
+
+    public void abrirTabAgregarUsuario() throws InterruptedException {
+        click(tabAgregarUsuario);
+        Thread.sleep(1000);
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // MÉTODOS DEL FORMULARIO
+    // ══════════════════════════════════════════════════════════════════════
+
+    public void ingresarNombre(String nombre) throws InterruptedException {
+        type(campoNombre, nombre);
+        Thread.sleep(500);
+    }
+
+    public void ingresarApellidoPaterno(String apellido) throws InterruptedException {
+        type(campoApellidoPaterno, apellido);
+        Thread.sleep(500);
+    }
+
+    public void ingresarApellidoMaterno(String apellido) throws InterruptedException {
+        type(campoApellidoMaterno, apellido);
+        Thread.sleep(500);
+    }
+
+    public void ingresarFechaNacimiento(String fecha) throws InterruptedException {
+        type(campoFechaNac, fecha);
+        Thread.sleep(500);
+    }
+
+    public void ingresarEmail(String email) throws InterruptedException {
+        type(campoEmailUsuario, email);
+        Thread.sleep(500);
+    }
+
+    public void seleccionarRol() throws InterruptedException {
+        WebElement el = waitForVisible(selectRol);
+        new Select(el).selectByIndex(6); // option[4]
+        Thread.sleep(500);
+    }
+
+    public void seleccionarEstado() throws InterruptedException {
+        WebElement el = waitForVisible(selectEstado);
+        new Select(el).selectByIndex(1); // option[2] = Activo
+        Thread.sleep(500);
+    }
+
+    public void clickCrearUsuario() throws InterruptedException {
+        click(botonCrearUsuario);
+        Thread.sleep(500);
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // MÉTODOS DE VERIFICACIÓN
+    // ══════════════════════════════════════════════════════════════════════
+
+    public boolean formularioEsVisible() {
+        return isDisplayed(labelNombre)
+            && isDisplayed(labelApellidoPaterno)
+            && isDisplayed(labelApellidoMaterno)
+            && isDisplayed(labelFecha)
+            && isDisplayed(labelEmail)
+            && isDisplayed(labelRol)
+            && isDisplayed(labelEstado);
+    }
+
+    public boolean mensajeExitoEsVisible() {
+        return isDisplayed(mensajeExito);
+    }
+
+    public String obtenerMensajeExito() {
+        return getText(mensajeExito);
+    }
+
+    //Confirmar registro
+    public void confirmarRegistro() throws InterruptedException {
+        click(botonConfirmarRegistro);
+        Thread.sleep(2000);
+    }
+
+    public boolean mensajeErrorEsVisible() {
+        try {
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            shortWait.until(ExpectedConditions.visibilityOfElementLocated(mensajeError));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}

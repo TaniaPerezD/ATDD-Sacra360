@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 
 import java.time.Duration;
 
@@ -58,5 +59,13 @@ public abstract class BasePage {
 
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
+    }
+    protected void selectByVisibleText(By locator, String text) {
+        WebElement el = waitForVisible(locator);
+        new org.openqa.selenium.support.ui.Select(el).selectByVisibleText(text);
+    }
+
+    protected String getAttribute(By locator, String attribute) {
+        return waitForVisible(locator).getAttribute(attribute);
     }
 }
