@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Sacra360 - Personas" verbose="1" parallel="false">
+
+    <test name="Personas">
+        <packages>
+            <package name="mx.sacra360.personas"/>
+        </packages>
+    </test>
+
+</suite>
