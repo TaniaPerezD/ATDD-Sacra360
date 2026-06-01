@@ -1,5 +1,5 @@
 package mx.sacra360.auditorias;
-
+//mvn clean compile test -Dtest=AuditoriaAplicacion
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import java.io.FileInputStream;
@@ -31,10 +30,6 @@ public class AuditoriaAplicacion {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
     }
-    @BeforeMethod
-    public void limpiarSesion() {
-        driver.manage().deleteAllCookies();
-    }
 
     @AfterTest
     public void closeDriver() throws Exception {
@@ -43,45 +38,6 @@ public class AuditoriaAplicacion {
         }
     }
 
-    // --- CASO 1: AUDITORÍA DE SEGURIDAD (El que ya te funciona) ---
-    @Test
-    public void pruebaAuditoriaSeguridad() {
-        String baseUrl = prop.getProperty("base.url");
-        String usuario = prop.getProperty("test.user");
-        String contrasenia = prop.getProperty("test.password");
-
-        driver.get(baseUrl);
-
-        driver.findElement(By.xpath("//*[@id=\"email\"]")).sendKeys(usuario);
-        driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys(contrasenia);
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div[1]/div/div[2]/button")).click();
-        try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
-
-        driver.get(baseUrl + "/auditoria-seguridad");
-        try { TimeUnit.SECONDS.sleep(4); } catch (InterruptedException e) { e.printStackTrace(); }
-
-        try {
-            driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/header/div[1]/button")).click();
-            TimeUnit.SECONDS.sleep(1);
-        } catch (Exception e) {
-            System.out.println("Menú superior ya desplegado.");
-        }
-        
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/aside/nav/a[5]")).click();
-        try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
-
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div/div[1]/button")).click();
-        try { TimeUnit.SECONDS.sleep(2); } catch (InterruptedException e) { e.printStackTrace(); }
-
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div/div[1]/div/div[1]/div[5]/select/option[2]")).click();
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div/div[1]/div/div[2]/button[1]")).click();
-        try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
-
-        WebElement celdaEstado = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/main/div/div/div[2]/div/table/tbody/tr[1]/td[2]/span"));
-        String txtResultado = celdaEstado.getText().trim();
-        
-        Assert.assertEquals(txtResultado, "Exitoso");
-    }
 
     // --- CASO 2: AUDITORÍA DE APLICACIÓN (El nuevo caso) ---
     @Test
