@@ -42,6 +42,8 @@ import org.testng.annotations.Test;
 
 public class BuscarPersonaPorCiTest extends BaseTest {
 
+    /********** Preparación de la Prueba **********/
+
     private PersonaPage personaPage;
 
     // CI de una persona que existe en el sistema de prueba
@@ -64,7 +66,7 @@ public class BuscarPersonaPorCiTest extends BaseTest {
     @Test(description = "TC-42: Buscar Persona por Carnet de Identidad")
     public void buscarPersonaPorCiTest() throws InterruptedException {
 
-        /********** Preparación de la Prueba **********/
+        
 
         // PASO 2. Navegar a 'Personas' y hacer clic en la pestaña 'Buscar Persona'
         ReportManager.info("PASO 2: Navegando al módulo Personas y abriendo la pestaña Buscar Persona");

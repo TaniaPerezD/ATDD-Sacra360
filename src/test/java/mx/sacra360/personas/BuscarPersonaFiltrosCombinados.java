@@ -45,6 +45,8 @@ import org.testng.annotations.Test;
 
 public class BuscarPersonaFiltrosCombinados extends BaseTest {
 
+
+    /********** Preparación de la Prueba **********/
     private PersonaPage personaPage;
 
     // Datos de búsqueda — deben existir en el sistema
@@ -70,8 +72,7 @@ public class BuscarPersonaFiltrosCombinados extends BaseTest {
     @Test(description = "TC-43: Buscar Persona con múltiples filtros combinados")
     public void buscarPersonaConFiltrosCombinados() throws InterruptedException {
 
-        /********** Preparación de la Prueba **********/
-
+        
         // PASO 2. Navegar a 'Personas' y abrir la pestaña 'Buscar Persona'
         ReportManager.info("PASO 2: Navegando al módulo Personas y abriendo la pestaña Buscar Persona");
         personaPage.navegarAPersonas();
@@ -145,6 +146,9 @@ public class BuscarPersonaFiltrosCombinados extends BaseTest {
         ReportManager.info("PASO 9: Con cuatro filtros la tabla devolvió "
             + resultadosCuatroFiltros + " resultado(s)");
 
+
+        /********** Verificación Final — Verificar resultados y limpieza **********/
+
         // Los resultados deben ser iguales o menores que la búsqueda anterior
         Assert.assertTrue(
             resultadosCuatroFiltros <= resultadosTresFiltros,
@@ -152,8 +156,6 @@ public class BuscarPersonaFiltrosCombinados extends BaseTest {
             + "pero se obtuvieron " + resultadosCuatroFiltros
             + " (antes eran " + resultadosTresFiltros + ")"
         );
-
-        /********** Verificación Final — PASO 10: Limpiar **********/
 
         // PASO 10. Limpiar todos los filtros con el botón 'Limpiar'
         ReportManager.info("PASO 10: Presionando el botón Limpiar para restablecer todos los filtros");
